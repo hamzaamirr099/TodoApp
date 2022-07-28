@@ -107,14 +107,31 @@ class ScheduleWidget extends StatelessWidget {
           BlocConsumer<AppCubit, CubitStates>(
             listener: (context, state) {},
             builder: (context, state) {
-              if (AppCubit.get(context).tasksOfTheDay.isNotEmpty) {
+              if (AppCubit.get(context).dailyRepeatedTasks.isNotEmpty || AppCubit.get(context).tasksOfTheDay.isNotEmpty) {
                 return Expanded(
-                  child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      return TaskInThatDay(
-                          taskData: AppCubit.get(context).tasksOfTheDay[index]);
-                    },
-                    itemCount: AppCubit.get(context).tasksOfTheDay.length,
+                  child: ListView(
+                    children: AppCubit.get(context)
+                        .dailyRepeatedTasks
+                        .map((taskItem) {
+                          // DateTime dateOfTask = DateTime.parse(taskItem["date"]);
+                      // DateTime tempDate = DateFormat("yyyy-MM-dd hh:mm:ss").parse(taskItem["date"]);
+                      // if(dateOfTheSelectedDay.isAfter(tempDate))
+                      //   {
+                      //     return Container(child: TaskInThatDay(taskData: taskItem));
+                      //   }
+                      return Container(child: TaskInThatDay(taskData: taskItem));
+
+                    }).toList()
+                      ..addAll(
+                        AppCubit.get(context).tasksOfTheDay.map(
+                              (taskItem) {
+                            if (taskItem['repeat'] != "Daily") {
+                              return Container(child: TaskInThatDay(taskData: taskItem));
+                            }
+                            return Container();
+                          },
+                        ),
+                      ),
                   ),
                 );
               } else {

@@ -367,7 +367,7 @@ class CreateTaskWidget extends StatelessWidget {
                           context: context,
                           title: "Warning!",
                           body:
-                              "Can't notify you in this time because it's passed, please pick another start time",
+                              "This time has passed, please pick another start time",
                         );
                       } else {
                         cubit.insertToDatabase();

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app_algoriza/core/utils/bloc/cubit.dart';
@@ -19,26 +20,22 @@ class AllWidget extends StatelessWidget {
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
-                  ListView.separated(
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return TaskItem(taskData: AppCubit.get(context).dailyRepeatedTasks[index]);
-                    },
-                    itemCount: AppCubit.get(context).dailyRepeatedTasks.length,
-                    separatorBuilder: (BuildContext context, int index) {
-                      return const SizedBox(height: 15.0);
-                    },
-                  ),
-                  const SizedBox(height: 15.0,),
                   Expanded(
-                    child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        return TaskItem(taskData: AppCubit.get(context).nonRepeatedTasks[index]);
-                      },
-                      itemCount: AppCubit.get(context).nonRepeatedTasks.length,
-                      separatorBuilder: (BuildContext context, int index) {
-                        return const SizedBox(height: 15.0);
-                      },
+                    child: ListView(
+                      children:
+                        AppCubit.get(context).dailyRepeatedTasks
+                            .map((taskItem) => Padding(
+                              padding: const EdgeInsets.only(bottom: 15.0),
+                              child: TaskItem(taskData: taskItem),
+                            ))
+                            .toList()..addAll(
+                          AppCubit.get(context).nonRepeatedTasks
+                              .map((taskItem) => Padding(
+                                padding: const EdgeInsets.only(bottom: 15.0),
+                                child: TaskItem(taskData: taskItem),
+                              ),
+                          ),
+                        ),
                     ),
                   ),
                 ],
